@@ -109,6 +109,29 @@ numbers.map({
 
 
 
+///////////////////////////////////////////////////////////////////
+
+/*
+	p?? -- inheritance and overrides
+	"Make another subclass of NamedShape called Circle that takes a radius and a name as arguments to its initializer. Implement an area and a describe method on the Circle class."
+*/
+
+public class Circle: NamedShape {
+	var radius
+
+	init(radius: Double, name: String){
+		self.radius = radius
+		super.init(name: name)
+	}
+	
+	func area() -> Double {
+		return 3.14 * radius * radius
+	}
+	
+	func describe() -> String {
+		return "A circle with radius \(radius)."
+	}
+}
 
 
 
