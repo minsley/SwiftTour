@@ -96,28 +96,78 @@ func meanAve(nums: Int...) -> Int {
 }
 meanAve(1,2,3,4,5)
 
-// p19 -- closures
+/*
+p19 -- closures
+"Write the closure to return zero for all odd numbers."
+*/
 
 var numbers = [20,19,7,12]
 numbers.map({
     (number: Int) -> Int in
-    return 1 - number % 2
+    return (number + 1) % 2
     })
 
-// p
+/*
+p19 -- closures abbr
+*/
 
-
-
-
-///////////////////////////////////////////////////////////////////
+var numbers2 = [20,19,7,12]
+numbers2.map({num in (num+1)%2})
 
 /*
-	p?? -- inheritance and overrides
+p19 -- numbered params
+*/
+
+sort([1,5,3,12,2]) {$0 > $1}
+
+/*
+p20 -- classes and objects
+*/
+
+class Shape {
+    var numberOfSides = 4
+    let name = "square"
+    
+    func simpleDescription() -> String {
+        return "A shape with \(numberOfSides) sides."
+    }
+    
+    func perfectAngles(sides: Int) -> Int {
+        return 360 / sides
+    }
+}
+
+var square = Shape()
+square.perfectAngles(square.numberOfSides)
+
+/*
+p21 -- Object CTor/DTor (init/deinit)
+*/
+
+class NamedShape {
+    var numSides: Int = 0
+    var name: String
+    
+    init(name: String){
+        self.name = name
+    }
+    
+    deinit{
+        self.name = ""
+    }
+    
+    func simpleDescription() -> String {
+        return "A shape with \(numSides) sides."
+    }
+}
+
+/*
+	p23 -- inheritance and overrides
 	"Make another subclass of NamedShape called Circle that takes a radius and a name as arguments to its initializer. Implement an area and a describe method on the Circle class."
 */
 
-public class Circle: NamedShape {
-	var radius
+class Circle: NamedShape {
+    var radius: Double
 
 	init(radius: Double, name: String){
 		self.radius = radius
