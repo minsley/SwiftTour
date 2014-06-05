@@ -4,22 +4,35 @@ import Cocoa
 
 var str = "Hello, playground"
 
-
-// p6 -- const declaration
+/*
+    const declaration
+    "Create a constant with an explicit type of FLoat and a value of 4."
+*/
 
 let myFloat: Float = 2.12345
 
+/*
+    type conversion
+    "Try removing the conversion to String from the last line. What error do you get?"
+*/
+
 let label = "The width is "
 let width = 94
-// Gives a "no + overload" error
-// let widthLabel = label + width
 
-// p7 -- easy string format/concat
+let widthLabel = label + String(width)
+// let widthLabel = label + width   // no + overload error
+
+/*
+    easy string format/concat
+    “Use \() to include a floating-point calculation in a string and to include someone’s name in a greeting.”
+*/
 
 let myFloat2: Float = 5.4321
 let myString = "String formatting: \(myFloat2)"
 
-// p8 -- arrays/dicts
+/*
+    arrays/dicts
+*/
 
 var myArray = ["thing1", "thing2", "thing3"]
 var myDict = [
@@ -28,7 +41,10 @@ var myDict = [
     "noColor" : 2
 ]
 
-// p10 -- optional values
+/*
+    optional values
+    “Change optionalName to nil. What greeting do you get? Add an else clause that sets a different greeting if optionalName is nil.”
+*/
 
 var optionalString: String? = "Hello"
 optionalString == nil
@@ -41,7 +57,10 @@ if let name = optionalName {
     greeting = "Hello, World!"
 }
 
-// p11 -- switch
+/* 
+    switch
+    “Try removing the default case. What error do you get?”
+*/
 
 let vegetable = "red pepper"
 switch vegetable {
@@ -55,7 +74,10 @@ default:    // commenting this out makes the swith invalid
     let vegetableComment = "Everything tastes good in soup."
 }
 
-// p12 -- for-in loops
+/* 
+    for-in loops
+    “Add another variable to keep track of which kind of number was the largest, as well as what that largest number was.”
+*/
 
 let interestingNumbers = [
     "Prime": [2, 3, 5, 7, 11, 13],
@@ -75,17 +97,28 @@ for (kind, numbers) in interestingNumbers {
 largest
 largestKind
 
-// p14 -- ranges
+/*
+    ranges
+*/
 
 var range1 = 1..5
 var range2 = 1...5
 
-// p15 -- func
+/* 
+    func
+    “Remove the day parameter. Add a parameter to include today’s lunch special in the greeting.”
+*/
 
 func greet(name: String, lunch: String) -> String {
     return "Hello, \(name). Lunch today will be \(lunch)."
 }
 greet("Matt", "turducken")
+
+
+/*
+    func
+    "Write a function that calculates the average of its arguments."
+*/
 
 func meanAve(nums: Int...) -> Int {
     var total = 0
@@ -97,8 +130,8 @@ func meanAve(nums: Int...) -> Int {
 meanAve(1,2,3,4,5)
 
 /*
-p19 -- closures
-"Write the closure to return zero for all odd numbers."
+    closures
+    "Write the closure to return zero for all odd numbers."
 */
 
 var numbers = [20,19,7,12]
@@ -108,20 +141,21 @@ numbers.map({
     })
 
 /*
-p19 -- closures abbr
+    closures abbr
 */
 
 var numbers2 = [20,19,7,12]
 numbers2.map({num in (num+1)%2})
 
 /*
-p19 -- numbered params
+    numbered params
 */
 
 sort([1,5,3,12,2]) {$0 > $1}
 
 /*
-p20 -- classes and objects
+    classes and objects
+    “Add a constant property with let, and add another method that takes an argument.”
 */
 
 class Shape {
@@ -141,7 +175,7 @@ var square = Shape()
 square.perfectAngles(square.numberOfSides)
 
 /*
-p21 -- Object CTor/DTor (init/deinit)
+    Object CTor/DTor (init/deinit)
 */
 
 class NamedShape {
@@ -162,7 +196,7 @@ class NamedShape {
 }
 
 /*
-	p23 -- inheritance and overrides
+	inheritance and overrides
 	"Make another subclass of NamedShape called Circle that takes a radius and a name as arguments to its initializer. Implement an area and a describe method on the Circle class."
 */
 
@@ -182,6 +216,144 @@ class Circle: NamedShape {
 		return "A circle with radius \(radius)."
 	}
 }
+
+/*
+    willSet and didSet
+*/
+
+class Car {
+    var running: Bool
+    var moving: Bool
+    
+    init(){
+        self.running = false
+        self.moving = false
+    }
+    
+    init(run: Bool, move: Bool){
+        self.running = run
+        self.moving = move
+    }
+}
+
+class CarAndTailgater {
+    
+    var honda: Car {
+    willSet {
+        vw.moving = newValue.moving
+    }
+    }
+    
+    var vw: Car{
+    willSet {
+        honda.moving = newValue.moving
+    }
+    }
+    
+    init(){
+        honda = Car()
+        vw = Car()
+    }
+}
+
+var morningCommute = CarAndTailgater()
+morningCommute.honda = Car(run: true, move: false)
+morningCommute.vw.running
+morningCommute.honda = Car(run: true, move: true)
+morningCommute.vw.moving
+
+/*
+    enum
+    “Write a function that compares two Rank values by comparing their raw values.”
+*/
+
+    enum Rank: Int {
+        case Ace = 1
+        case Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten
+        case Jack, Queen, King
+        func simpleDescription() -> String {
+            switch self {
+            case .Ace:
+                return "ace"
+            case .Jack:
+                return "jack"
+            case .Queen:
+                return "queen"
+            case .King:
+                return "king"
+            default:
+                return String(self.toRaw())
+            }
+        }
+    }
+
+func compareRanks(rank1: Rank, rank2: Rank) -> String {
+    if(rank1.toRaw() > rank2.toRaw()) {
+        return "\(rank1.simpleDescription()) > \(rank2.simpleDescription())"
+    } else if (rank1.toRaw() < rank2.toRaw()) {
+        return "\(rank2.simpleDescription()) > \(rank1.simpleDescription())"
+    } else {
+        return "\(rank1.simpleDescription()) == \(rank2.simpleDescription())"
+    }
+}
+
+compareRanks(Rank.Ace, Rank.Eight)
+
+/*
+    enum 2
+    “Add a color method to Suit that returns “black” for spades and clubs, and returns “red” for hearts and diamonds.”
+*/
+
+enum Suit {
+    case Spades, Hearts, Diamonds, Clubs
+    func simpleDescription() -> String {
+        switch self {
+        case .Spades:
+            return "spades"
+        case .Hearts:
+            return "hearts"
+        case .Diamonds:
+            return "diamonds"
+        case .Clubs:
+            return "clubs"
+        }
+    }
+    func color() -> String {
+        switch self {
+        case .Spades, .Clubs:
+            return "black"
+        default:
+            return "red"
+        }
+    }
+}
+
+Suit.Hearts.color()
+Suit.Spades.color()
+
+/*
+    structs
+    Add a method to Card that creates a full deck of cards, with one card of each combination of rank and suit."
+*/
+
+struct Card {
+    var rank: Rank
+    var suit: Suit
+    func simpleDescription() -> String {
+        return "The \(rank.simpleDescription()) of \(suit.simpleDescription())"
+    }
+    func deck() -> Card[]{
+        var deck: Card[]
+        for s in Suit.toArray() {
+            
+        }
+        return deck
+    }
+}
+
+
+
+
 
 
 
