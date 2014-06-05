@@ -344,10 +344,20 @@ struct Card {
     }
     func deck() -> Card[]{
         var deck: Card[]
-        for s in Suit.toArray() {
-            
+        for s in Suit {
+            for r in Rank {
+                deck += Card(rank: r, suit: s)
+            }
         }
         return deck
+    }
+    func deck2() -> Card[]{
+        var deck: Card[]
+        for var s = "Spades"; s <= "Clubs"; s++ {
+            for var r = "Ace"; r <= "King"; r++ {
+                deck += Card(rank: r, suit: s)
+            }
+        }
     }
 }
 
