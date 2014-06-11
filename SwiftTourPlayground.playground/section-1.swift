@@ -332,39 +332,157 @@ Suit.Hearts.color()
 Suit.Spades.color()
 
 /*
-    structs
+    Enum Iteration -- IMPOSSIBRU!!
     Add a method to Card that creates a full deck of cards, with one card of each combination of rank and suit."
+
+    Thanks to SiLo on StackOverflow for this solution
+    https://stackoverflow.com/questions/24061584/looping-through-enum-values-in-swift
 */
 
-struct Card {
-    var rank: Rank
-    var suit: Suit
+enum Rank2: Int {
+    case Ace = 1
+    case Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King
+    
     func simpleDescription() -> String {
-        return "The \(rank.simpleDescription()) of \(suit.simpleDescription())"
-    }
-    func deck() -> Card[]{
-        var deck: Card[]
-        for s in Suit {
-            for r in Rank {
-                deck += Card(rank: r, suit: s)
-            }
-        }
-        return deck
-    }
-    func deck2() -> Card[]{
-        var deck: Card[]
-        for var s = "Spades"; s <= "Clubs"; s++ {
-            for var r = "Ace"; r <= "King"; r++ {
-                deck += Card(rank: r, suit: s)
-            }
+        switch self {
+        case .Ace:
+            return "ace"
+        case .Jack:
+            return "jack"
+        case .Queen:
+            return "queen"
+        case .King:
+            return "king"
+        default:
+            return String(self.toRaw())
         }
     }
 }
 
+enum Suit2: Int {
+    case Spades = 0
+    case Hearts, Diamonds, Clubs
+    
+    func simpleDescription() -> String {
+        switch self {
+        case .Spades:
+            return "spades"
+        case .Hearts:
+            return "hearts"
+        case .Diamonds:
+            return "diamonds"
+        case .Clubs:
+            return "clubs"
+        }
+    }
+}
+
+struct Card {
+    var rank: Rank2
+    var suit: Suit2
+    func description() -> String {
+        return "The \(rank.simpleDescription()) of \(suit.simpleDescription())"
+    }
+}
 
 
+func generateDeck() -> Card[]
+{
+    let ranksPerSuit = 13
+    var deck = Card[]()
+    
+    for index in 0..52
+    {
+        let suit = Suit2.fromRaw(index / ranksPerSuit)
+        let rank = Rank2.fromRaw(index % ranksPerSuit + 1)
+        
+        let card = Card(rank: rank!, suit: suit!)
+        deck.append(card)
+    }
+    return deck
+}
 
+let deck: Card[] = generateDeck()
+for card : Card in deck { println("\(card.description())") }
 
+/*
+    enums again
+    "Add a third case to ServerResponse and to the switch."
+*/
+
+enum ServerResponse {
+    case Result(String, String)
+    case Error(String)
+    case Maintenance(String)
+}
+
+let success = ServerResponse.Result("6:00 am", "8:09 pm")
+let failure = ServerResponse.Error("Out of cheese.")
+let planned = ServerResponse.Maintenance("Down for planned maintenance.")
+
+switch success {
+case let .Result(sunrise, sunset):
+    let serverResponse = "Sunrise is at \(sunrise) and sunset is at \(sunset)."
+case let .Error(error):
+    let serverResponse = "Failure...  \(error)"
+case let .Maintenance(maintenance):
+    let serverResponse = "Oops! \(maintenance)"
+}
+
+/*
+    protocols and extensions
+    "Write an enumeration that conforms to this protocol."
+*/
+
+protocol ExampleProtocol {
+    var simpleDescription: String { get }
+    mutating func adjust()
+}
+
+enum Emus: ExampleProtocol {
+    var simpleDescription: String{
+        get { return "An enum of emus." }
+    }
+
+    mutating func adjust() {
+        
+    }
+}
+
+/*
+    Extensions
+    "Write an extension for the Double type that adds an absoluteValue property."
+*/
+
+extension Double {
+    var absoluteValue: Int {
+    get {
+        if self > 0 { return (Int)(self) }
+        else { return (Int)(self) * -1 }
+    }
+    }
+}
+
+1.20103.absoluteValue
+(-2.945).absoluteValue
+
+/*
+    Generics
+    "Modify the anyCommonElements function to make a function that returns an array of the elements that any two sequences have in common."
+*/
+
+func anyCommonElements <T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element> (lhs: T, rhs: U) -> Array<T.GeneratorType.Element> {
+    var result = Array<T.GeneratorType.Element>()
+    for lhsItem in lhs {
+        for rhsItem in rhs {
+            if lhsItem == rhsItem {
+                result += lhsItem
+            }
+        }
+    }
+    return result
+}
+anyCommonElements([1, 2, 3], [3])
 
 
 
